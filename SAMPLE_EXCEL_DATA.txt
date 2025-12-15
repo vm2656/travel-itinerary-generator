@@ -1,0 +1,235 @@
+# Sample Excel Data
+# Copy this data into an Excel spreadsheet to create a sample trip file
+
+# Instructions:
+# 1. Open Microsoft Excel, Google Sheets, or LibreOffice Calc
+# 2. Create a new spreadsheet
+# 3. Copy the data below into your spreadsheet following the column structure
+# 4. Save as .xlsx format
+# 5. Upload to the Travel Itinerary Generator
+
+# ====== ROW 1 ======
+A1: Amazing Tokyo Adventure
+
+# ====== ROW 2 ======
+A2: Tokyo, Japan
+
+# ====== ROW 3 ======
+A3: 2024-03-15
+B3: 2024-03-20
+
+# ====== ROW 4 ======
+(Leave blank)
+
+# ====== ROW 5 - Day 1 Header ======
+A5: Day 1
+B5: Arrival & Shibuya Exploration
+C5: $150
+
+# ====== ROW 6 - Activities Header ======
+A6: Activities
+
+# ====== ROW 7-10 - Activities ======
+A7: 09:00
+B7: Arrival at Narita Airport
+C7: Land and clear customs, collect luggage
+D7: Narita International Airport
+E7: 2 hours
+F7: Free
+G7: Exchange some yen at the airport; buy a Suica card for trains
+
+A8: 12:00
+B8: Hotel Check-in
+C8: Settle into your hotel in Shibuya
+D8: Shibuya District
+E8: 1 hour
+F8: $200
+G8: Store luggage if room isn't ready; ask for local recommendations
+
+A9: 15:00
+B9: Shibuya Crossing
+C9: Experience the world's busiest pedestrian crossing
+D9: Shibuya Crossing
+E9: 1 hour
+F9: Free
+G9: Best views from Starbucks on 2nd floor; visit nearby Hachiko statue
+
+A10: 17:00
+B10: Meiji Shrine
+C10: Visit this peaceful Shinto shrine in the heart of Tokyo
+D10: Meiji Shrine
+E10: 2 hours
+F10: Free
+G10: Closes at sunset; walk through beautiful forest path
+
+# ====== ROW 11 - Restaurants Header ======
+A11: Restaurants
+
+# ====== ROW 12-14 - Restaurants ======
+A12: Ichiran Ramen
+B12: Ramen
+C12: $
+D12: Yes
+E12: Shibuya
+F12: Famous tonkotsu ramen chain with individual booths and vegetarian options
+
+A13: Gonpachi
+B13: Izakaya
+C13: $$
+D13: Yes
+E13: Shibuya
+F13: The "Kill Bill" restaurant with traditional atmosphere and vegetarian menu
+
+A14: Afuri
+B14: Ramen
+C14: $
+D14: Yes
+E14: Harajuku
+F14: Yuzu-flavored ramen with vegan options available
+
+# ====== ROW 15 - Day 2 Header ======
+A15: Day 2
+B15: Traditional Tokyo - Asakusa & Akihabara
+C15: $120
+
+# ====== ROW 16 - Activities Header ======
+A16: Activities
+
+# ====== ROW 17-21 - Activities ======
+A17: 09:00
+B17: Senso-ji Temple
+C17: Visit Tokyo's oldest Buddhist temple
+D17: Senso-ji Temple, Asakusa
+E17: 2 hours
+F17: Free
+G17: Arrive early to avoid crowds; see the giant red lantern at Kaminarimon Gate
+
+A18: 11:00
+B18: Nakamise Shopping Street
+C18: Browse traditional snacks and souvenirs
+D18: Nakamise-dori, Asakusa
+E18: 1.5 hours
+F18: $50
+G18: Try melon pan and ningyo-yaki; great for gifts
+
+A19: 13:30
+B19: Tokyo Skytree
+C19: Observation deck with panoramic city views
+D19: Tokyo Skytree
+E19: 2 hours
+F19: $25
+G19: Book tickets online to skip lines; visit on clear day
+
+A20: 16:00
+B20: Akihabara Electric Town
+C20: Explore anime, manga, and electronics district
+D20: Akihabara
+E20: 3 hours
+F20: $100
+G20: Visit Yodobashi Camera; check out retro game shops
+
+# ====== ROW 22 - Restaurants Header ======
+A22: Restaurants
+
+# ====== ROW 23-25 - Restaurants ======
+A23: Daikokuya Tempura
+B23: Tempura
+C23: $$
+D23: Yes
+E23: Asakusa
+F23: Famous tempura restaurant established in 1887, excellent vegetable tempura
+
+A24: Maidreamin
+B24: Themed Cafe
+C24: $$
+D24: Yes
+E24: Akihabara
+F24: Popular maid cafe experience with vegetarian menu options
+
+A25: Kanda Yabu Soba
+B25: Soba Noodles
+C25: $
+D25: Yes
+E25: Near Akihabara
+F25: Historic soba restaurant from 1880, handmade buckwheat noodles
+
+# ====== ROW 26 - Day 3 Header ======
+A26: Day 3
+B26: Harajuku, Shinjuku & Tokyo Tower
+C26: $180
+
+# ====== ROW 27 - Activities Header ======
+A27: Activities
+
+# ====== ROW 28-33 - Activities ======
+A28: 09:30
+B28: Harajuku & Takeshita Street
+C28: Experience youth culture and unique fashion
+D28: Takeshita Street, Harajuku
+E28: 2 hours
+F28: $40
+G28: Try crepes and colorful cotton candy; people watching is amazing
+
+A29: 11:30
+B29: Omotesando Shopping
+C29: Walk down Tokyo's Champs-Élysées with luxury boutiques
+D29: Omotesando Avenue
+E29: 1.5 hours
+F29: $80
+G29: Beautiful architecture; visit TOD's and Prada buildings
+
+A30: 14:00
+B30: Shinjuku Gyoen National Garden
+C30: Peaceful Japanese garden with traditional and English landscapes
+D30: Shinjuku Gyoen
+E30: 2 hours
+F30: $5
+G30: Perfect for cherry blossoms in spring; closes at 16:30
+
+A31: 17:00
+B31: Tokyo Metropolitan Building
+C31: Free observation deck with sunset views
+D31: Tokyo Metropolitan Government Building
+E31: 1.5 hours
+F31: Free
+G31: Arrive before sunset; free alternative to Tokyo Tower observation deck
+
+A32: 19:00
+B32: Tokyo Tower Evening Visit
+C32: Iconic red tower illuminated at night
+D32: Tokyo Tower
+E32: 1.5 hours
+F32: $20
+G32: Beautiful night views; less crowded than Tokyo Skytree
+
+# ====== ROW 34 - Restaurants Header ======
+A34: Restaurants
+
+# ====== ROW 35-37 - Restaurants ======
+A35: Ain Soph Journey
+B35: Vegan
+C35: $$
+D35: Yes
+E35: Shinjuku
+F35: 100% vegan restaurant with amazing burgers and pancakes
+
+A36: Tsunahachi
+B36: Tempura
+C36: $$
+D36: Yes
+E36: Shinjuku
+F36: Long-established tempura restaurant with excellent vegetable sets
+
+A37: Shakey's Pizza
+B37: Pizza
+C37: $
+D37: Yes
+E37: Near Tokyo Tower
+F37: Popular pizza chain with unlimited salad bar and vegetarian pizzas
+
+# Notes:
+# - All times are in 24-hour format
+# - Dates are in YYYY-MM-DD format
+# - Costs are in USD ($)
+# - Price ranges: $ (budget), $$ (moderate), $$$ (expensive)
+# - Veg-Friendly: Yes/No

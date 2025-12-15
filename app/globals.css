@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-gradient-to-br from-blue-50 to-indigo-50 min-h-screen;
+  }
+}
+
+@layer utilities {
+  .print-only {
+    display: none;
+  }
+
+  @media print {
+    .no-print {
+      display: none !important;
+    }
+
+    .print-only {
+      display: block;
+    }
+
+    .print-break-before {
+      page-break-before: always;
+    }
+
+    .print-break-inside-avoid {
+      page-break-inside: avoid;
+    }
+  }
+}
+
+.itinerary-container {
+  @apply max-w-6xl mx-auto px-4 py-8;
+}
+
+.day-section {
+  @apply bg-white rounded-xl shadow-lg p-6 mb-6 print-break-inside-avoid;
+}
+
+.activity-card {
+  @apply bg-gradient-to-br from-white to-gray-50 rounded-lg p-4 border border-gray-200 hover:shadow-md transition-shadow;
+}
