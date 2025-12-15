@@ -478,7 +478,7 @@ function RestaurantCard({ restaurant, onImageClick }: {
       <div className="flex items-start justify-between mb-2">
         <h4 className="font-bold text-gray-900">{restaurant.name}</h4>
         {restaurant.vegetarianFriendly && (
-          <Leaf className="w-4 h-4 text-green-600 flex-shrink-0" title="Vegetarian Friendly" />
+          <Leaf className="w-4 h-4 text-green-600 flex-shrink-0" aria-label="Vegetarian Friendly" />
         )}
       </div>
 
