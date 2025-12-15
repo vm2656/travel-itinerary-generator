@@ -75,7 +75,7 @@ export default function Home() {
               Import from Excel
             </h2>
             <p className="text-gray-600 mb-4">
-              Upload your Excel file with trip details and we'll transform it into a beautiful, shareable itinerary
+              Upload your Excel file with trip details and we&apos;ll transform it into a beautiful, shareable itinerary
             </p>
             <div className="flex items-center text-blue-600 font-semibold">
               Get Started

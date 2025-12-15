@@ -51,7 +51,7 @@ export default function ItineraryDisplay({ itinerary, onBack }: ItineraryDisplay
       const activitiesWithImages = []
       for (const activity of day.activities) {
         // More specific query with location details for better image variety
-        const { imageUrl, images } = await fetchImage(`${activity.title} ${activity.location} ${itinerary.destination} attraction`, 5)
+        const { imageUrl, images } = await fetchImage(`${activity.title} ${activity.location} ${itinerary.destination} attraction`, 3)
         const mapUrl = createGoogleMapsUrl(activity.location, itinerary.destination)
         const searchUrl = createGoogleSearchUrl(`${activity.title} ${activity.location} ${itinerary.destination}`)
         console.log(`Activity "${activity.title}" fetched ${images.length} images:`, images)
@@ -63,7 +63,7 @@ export default function ItineraryDisplay({ itinerary, onBack }: ItineraryDisplay
       const restaurantsWithImages = []
       for (const restaurant of day.restaurants) {
         // More specific query for restaurants with location
-        const { imageUrl, images } = await fetchImage(`${restaurant.name} restaurant ${restaurant.location} ${itinerary.destination} ${restaurant.cuisine}`, 5)
+        const { imageUrl, images } = await fetchImage(`${restaurant.name} restaurant ${restaurant.location} ${itinerary.destination} ${restaurant.cuisine}`, 3)
         const mapUrl = createGoogleMapsUrl(restaurant.location, itinerary.destination)
         const searchUrl = createGoogleSearchUrl(`${restaurant.name} ${restaurant.location} ${itinerary.destination} restaurant`)
         restaurantsWithImages.push({ ...restaurant, image: imageUrl, images, mapUrl, searchUrl })

@@ -104,7 +104,7 @@ export default function GenerateMode({ onBack }: GenerateModeProps) {
             </div>
             <div>
               <h1 className="text-3xl font-bold text-gray-900">Generate with AI</h1>
-              <p className="text-gray-600">Tell us your preferences and we'll create a personalized itinerary</p>
+              <p className="text-gray-600">Tell us your preferences and we&apos;ll create a personalized itinerary</p>
             </div>
           </div>
 
