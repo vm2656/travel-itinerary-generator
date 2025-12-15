@@ -122,6 +122,38 @@ export default function ItineraryDisplay({ itinerary, onBack }: ItineraryDisplay
     return `https://www.google.com/search?q=${encodeURIComponent(query)}`
   }
 
+  const stripMarkdown = (text: string): string => {
+    return text
+      .replace(/\*\*(.+?)\*\*/g, '$1')  // Remove bold **text**
+      .replace(/\*(.+?)\*/g, '$1')      // Remove italic *text*
+      .replace(/`(.+?)`/g, '$1')        // Remove code `text`
+      .replace(/~~(.+?)~~/g, '$1')      // Remove strikethrough ~~text~~
+  }
+
+  const calculateTotalCost = (): string => {
+    let total = 0
+    enrichedItinerary.days.forEach(day => {
+      day.activities.forEach(activity => {
+        if (activity.cost) {
+          const match = activity.cost.match(/\d+/)
+          if (match) total += parseInt(match[0])
+        }
+      })
+    })
+    return total > 0 ? `$${total}` : ''
+  }
+
+  const calculateDayCost = (day: DayItinerary): string => {
+    let total = 0
+    day.activities.forEach(activity => {
+      if (activity.cost) {
+        const match = activity.cost.match(/\d+/)
+        if (match) total += parseInt(match[0])
+      }
+    })
+    return total > 0 ? `$${total}` : ''
+  }
+
   const toggleDay = (day: number) => {
     setExpandedDays((prev) => {
       const newSet = new Set(prev)
@@ -215,9 +247,9 @@ export default function ItineraryDisplay({ itinerary, onBack }: ItineraryDisplay
                 {format(new Date(enrichedItinerary.startDate), 'MMM d')} - {format(new Date(enrichedItinerary.endDate), 'MMM d, yyyy')}
               </div>
             </div>
-            {enrichedItinerary.totalEstimatedCost && (
+            {calculateTotalCost() && (
               <div className="mt-4 text-xl font-semibold">
-                Total Estimated Cost: {enrichedItinerary.totalEstimatedCost}
+                Total Estimated Cost: {calculateTotalCost()}
               </div>
             )}
           </div>
@@ -261,6 +293,7 @@ export default function ItineraryDisplay({ itinerary, onBack }: ItineraryDisplay
             expanded={expandedDays.has(day.day)}
             onToggle={() => toggleDay(day.day)}
             onImageClick={openLightbox}
+            dayCost={calculateDayCost(day)}
           />
         ))}
         </div>
@@ -274,9 +307,10 @@ interface DayCardProps {
   expanded: boolean
   onToggle: () => void
   onImageClick: (images: string[], title: string) => void
+  dayCost: string
 }
 
-function DayCard({ day, expanded, onToggle, onImageClick }: DayCardProps) {
+function DayCard({ day, expanded, onToggle, onImageClick, dayCost }: DayCardProps) {
   return (
     <div className="bg-white rounded-xl shadow-lg mb-6 overflow-hidden print-break-inside-avoid">
       {/* Day Header */}
@@ -294,9 +328,9 @@ function DayCard({ day, expanded, onToggle, onImageClick }: DayCardProps) {
           </div>
         </div>
         <div className="flex items-center gap-4">
-          {day.estimatedCost && (
+          {dayCost && (
             <span className="bg-white/20 px-4 py-2 rounded-lg font-semibold">
-              {day.estimatedCost}
+              {dayCost}
             </span>
           )}
           {expanded ? <ChevronUp className="w-6 h-6" /> : <ChevronDown className="w-6 h-6" />}
@@ -307,7 +341,7 @@ function DayCard({ day, expanded, onToggle, onImageClick }: DayCardProps) {
       <div className="print-only bg-gradient-to-r from-blue-500 to-blue-600 text-white p-6">
         <h2 className="text-2xl font-bold mb-2">Day {day.day}: {day.title}</h2>
         <p className="text-blue-100">{format(new Date(day.date), 'EEEE, MMMM d, yyyy')}</p>
-        {day.estimatedCost && <p className="mt-2 font-semibold">Estimated Cost: {day.estimatedCost}</p>}
+        {dayCost && <p className="mt-2 font-semibold">Estimated Cost: {dayCost}</p>}
       </div>
 
       {/* Day Content */}
@@ -425,7 +459,7 @@ function ActivityCard({ activity, onImageClick }: {
           {activity.tips && (
             <div className="bg-yellow-50 border-l-4 border-yellow-400 p-3 mt-2">
               <p className="text-sm text-yellow-800">
-                <strong>Tip:</strong> {activity.tips}
+                <strong>Tip:</strong> {stripMarkdown(activity.tips)}
               </p>
             </div>
           )}
