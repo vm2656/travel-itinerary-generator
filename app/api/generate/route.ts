@@ -28,7 +28,22 @@ export async function POST(request: NextRequest) {
       throw new Error('Failed to extract JSON from response')
     }
 
-    const itinerary: TripItinerary = JSON.parse(jsonMatch[0])
+    // Clean the JSON string to fix common AI-generated JSON issues
+    let cleanedJson = jsonMatch[0]
+      .replace(/,\s*([\]}])/g, '$1')  // Remove trailing commas
+      .replace(/([{,]\s*)(\w+):/g, '$1"$2":')  // Quote unquoted keys
+      .replace(/:\s*'([^']*)'/g, ': "$1"')  // Replace single quotes with double quotes for values
+      .replace(/\n/g, ' ')  // Remove newlines within strings
+      .replace(/\r/g, '')  // Remove carriage returns
+
+    let itinerary: TripItinerary
+    try {
+      itinerary = JSON.parse(cleanedJson)
+    } catch (parseError) {
+      console.error('JSON parse error:', parseError)
+      console.error('Cleaned JSON:', cleanedJson.substring(0, 500))
+      throw new Error(`Failed to parse JSON: ${parseError}`)
+    }
 
     return NextResponse.json(itinerary)
   } catch (error) {
@@ -73,7 +88,13 @@ For each day, include:
 5. 2-3 restaurant recommendations per day with cuisine type, price range ($, $$, $$$), and vegetarian-friendly status
 6. Practical tips specific to each activity
 
-Return ONLY valid JSON in this exact format (no markdown, no code blocks):
+CRITICAL: Return ONLY valid JSON. No markdown, no code blocks, no backticks, no explanations.
+- Use double quotes for all strings
+- No trailing commas
+- Escape all special characters in strings
+- Use proper JSON syntax
+
+Format:
 
 {
   "title": "Trip title",
