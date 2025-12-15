@@ -22,6 +22,15 @@ interface EnrichedRestaurant extends Restaurant {
   searchUrl?: string
 }
 
+// Helper function to strip markdown formatting
+function stripMarkdown(text: string): string {
+  return text
+    .replace(/\*\*(.+?)\*\*/g, '$1')  // Remove bold **text**
+    .replace(/\*(.+?)\*/g, '$1')      // Remove italic *text*
+    .replace(/`(.+?)`/g, '$1')        // Remove code `text`
+    .replace(/~~(.+?)~~/g, '$1')      // Remove strikethrough ~~text~~
+}
+
 export default function ItineraryDisplay({ itinerary, onBack }: ItineraryDisplayProps) {
   const [expandedDays, setExpandedDays] = useState<Set<number>>(new Set([1]))
   const [loadingImages, setLoadingImages] = useState(true)
@@ -120,14 +129,6 @@ export default function ItineraryDisplay({ itinerary, onBack }: ItineraryDisplay
 
   const createGoogleSearchUrl = (query: string): string => {
     return `https://www.google.com/search?q=${encodeURIComponent(query)}`
-  }
-
-  const stripMarkdown = (text: string): string => {
-    return text
-      .replace(/\*\*(.+?)\*\*/g, '$1')  // Remove bold **text**
-      .replace(/\*(.+?)\*/g, '$1')      // Remove italic *text*
-      .replace(/`(.+?)`/g, '$1')        // Remove code `text`
-      .replace(/~~(.+?)~~/g, '$1')      // Remove strikethrough ~~text~~
   }
 
   const calculateTotalCost = (): string => {
