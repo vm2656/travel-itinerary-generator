@@ -2,6 +2,27 @@ import { NextRequest, NextResponse } from 'next/server'
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import { GenerateFormData, TripItinerary } from '@/types'
 
+// Retry helper for API calls
+async function retryWithBackoff<T>(
+  fn: () => Promise<T>,
+  retries: number = 3,
+  delay: number = 1000
+): Promise<T> {
+  try {
+    return await fn()
+  } catch (error: any) {
+    // Check if it's a 503 overload error
+    const is503 = error?.message?.includes('503') || error?.message?.includes('overloaded')
+
+    if (retries > 0 && is503) {
+      console.log(`API overloaded, retrying in ${delay}ms... (${retries} retries left)`)
+      await new Promise(resolve => setTimeout(resolve, delay))
+      return retryWithBackoff(fn, retries - 1, delay * 2) // Exponential backoff
+    }
+    throw error
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const formData: GenerateFormData = await request.json()
@@ -14,12 +35,20 @@ export async function POST(request: NextRequest) {
     }
 
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY)
-    // Using models/gemini-2.5-flash - fastest free model (June 2025)
-    const model = genAI.getGenerativeModel({ model: 'models/gemini-2.5-flash' })
+    // Using models/gemini-2.5-flash with Google Search grounding
+    const model = genAI.getGenerativeModel({
+      model: 'models/gemini-2.5-flash',
+      tools: [{ googleSearch: {} } as any] // TypeScript defs not updated yet, but API supports it
+    })
 
     const prompt = createPrompt(formData)
 
-    const result = await model.generateContent(prompt)
+    // Retry with exponential backoff for 503 errors
+    const result = await retryWithBackoff(
+      () => model.generateContent(prompt),
+      3,  // 3 retries
+      2000 // Start with 2 second delay
+    )
     const responseText = result.response.text()
 
     // Parse the JSON response from Gemini

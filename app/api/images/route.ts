@@ -83,7 +83,7 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
     query = body.query
-    const count = body.count || 1
+    const count = body.count || 3
 
     if (API_KEYS.length === 0 || !process.env.GOOGLE_SEARCH_ENGINE_ID) {
       return NextResponse.json(

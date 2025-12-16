@@ -335,7 +335,10 @@ git push -u origin main
 - **Activity Cards**: Rich cards with images, timing, locations, costs, and tips
 - **Restaurant Cards**: Cuisine type, price range, vegetarian indicators
 - **Google Maps Links**: One-click navigation to locations
-- **Responsive Images**: Automatically fetched and optimized
+- **High-Quality Images**: Automatically fetched from Google Custom Search
+  - Multiple images per location for browsing
+  - Image lightbox gallery for full-screen viewing
+  - Filters for large, high-quality photos only
 
 ### Export to HTML
 
@@ -413,11 +416,12 @@ npm run dev
 
 ### Google Gemini API (100% FREE!)
 
+**For Itinerary Generation & Travel Facts:**
 - **Free tier**: 15 requests/minute, 1,500 requests/day
 - **Cost per itinerary**: $0.00 (FREE!)
 - **Typical usage**: 1-50 itineraries per day easily fits in free tier
 - **No credit card required**
-- **Perfect for**: Personal use, development, small production apps
+- Includes AI-generated destination-specific travel facts
 
 ### Google Custom Search API (Optional)
 
@@ -426,12 +430,22 @@ npm run dev
 - **Each itinerary**: ~5-30 image queries
 - **Alternative**: App uses free Unsplash images as fallback
 
-### Total Monthly Cost
+### Total Monthly Cost Estimate
 
-- **Without Google Image Search**: $0.00 (100% FREE)
-- **With Google Image Search**: $0-5/month depending on usage
+**Light Personal Use (5-10 itineraries/month):**
+- Gemini API: $0/month (completely free tier)
+- Google Image Search: $0 (free tier)
+- **Total: $0/month**
 
-**Tip**: Start with just Gemini API. The app works great with free Unsplash images!
+**Moderate Use (30-50 itineraries/month):**
+- Gemini API: $0/month (stays in free tier)
+- Google Image Search: $0-5/month
+- **Total: ~$0-5/month**
+
+**Tips to minimize costs:**
+- Gemini API is 100% free for personal use (1,500 requests/day)
+- Use multiple Google Search API keys to maximize free tier (300 queries with 3 keys)
+- App falls back to placeholder images if Google Search API is not configured
 
 ## Contributing
 
