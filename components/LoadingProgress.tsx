@@ -14,20 +14,71 @@ const loadingMessages = [
 interface LoadingProgressProps {
   stage: 'generating' | 'loading-images'
   progress?: number
+  destination?: string
 }
 
-export default function LoadingProgress({ stage, progress = 0 }: LoadingProgressProps) {
+export default function LoadingProgress({ stage, progress = 0, destination }: LoadingProgressProps) {
   const [messageIndex, setMessageIndex] = useState(0)
   const [dots, setDots] = useState('')
+  const [travelFact, setTravelFact] = useState('')
+  const [travelFacts, setTravelFacts] = useState<string[]>([])
+  const [loadingFacts, setLoadingFacts] = useState(false)
+
+  // Fetch AI-generated travel facts
+  useEffect(() => {
+    const fetchTravelFacts = async () => {
+      if (!destination) return
+
+      setLoadingFacts(true)
+      try {
+        const response = await fetch('/api/travel-facts', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ destination }),
+        })
+
+        if (response.ok) {
+          const data = await response.json()
+          setTravelFacts(data.facts || [])
+          setTravelFact(data.facts[0] || 'Preparing your travel itinerary...')
+        } else {
+          setTravelFacts(['Preparing your personalized travel experience...'])
+          setTravelFact('Preparing your personalized travel experience...')
+        }
+      } catch (error) {
+        console.error('Error fetching travel facts:', error)
+        setTravelFacts(['Preparing your personalized travel experience...'])
+        setTravelFact('Preparing your personalized travel experience...')
+      } finally {
+        setLoadingFacts(false)
+      }
+    }
+
+    if (stage === 'generating' && destination && !loadingFacts && travelFacts.length === 0) {
+      fetchTravelFacts()
+    }
+  }, [destination, stage, loadingFacts, travelFacts.length])
 
   useEffect(() => {
     if (stage === 'generating') {
-      const interval = setInterval(() => {
+      // Rotate loading messages
+      const messageInterval = setInterval(() => {
         setMessageIndex((prev) => (prev + 1) % loadingMessages.length)
       }, 3000)
-      return () => clearInterval(interval)
+
+      // Rotate travel facts every 10 seconds
+      const factInterval = setInterval(() => {
+        if (travelFacts.length > 0) {
+          setTravelFact(travelFacts[Math.floor(Math.random() * travelFacts.length)])
+        }
+      }, 10000)
+
+      return () => {
+        clearInterval(messageInterval)
+        clearInterval(factInterval)
+      }
     }
-  }, [stage])
+  }, [stage, travelFacts])
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -82,14 +133,22 @@ export default function LoadingProgress({ stage, progress = 0 }: LoadingProgress
             </p>
           )}
 
-          {/* Fun Facts */}
-          <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-            <p className="text-sm text-gray-700 text-center italic">
-              {stage === 'generating'
-                ? "Did you know? Travel broadens the mind and creates lifelong memories! 🌍"
-                : "Pro tip: Click on any image to view more photos! 📸"}
-            </p>
-          </div>
+          {/* Travel Facts */}
+          {stage === 'generating' && travelFact && progress === 0 && (
+            <div className="mt-6 p-4 bg-gradient-to-r from-teal-50 to-orange-50 rounded-lg border border-teal-200 animate-pulse">
+              <p className="text-sm text-gray-700 text-center font-medium">
+                ✨ {travelFact}
+              </p>
+            </div>
+          )}
+
+          {stage === 'loading-images' && (
+            <div className="mt-6 p-4 bg-blue-50 rounded-lg">
+              <p className="text-sm text-gray-700 text-center italic">
+                Pro tip: Click on any image to view more photos! 📸
+              </p>
+            </div>
+          )}
         </div>
       </div>
 
