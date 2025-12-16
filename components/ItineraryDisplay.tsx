@@ -59,10 +59,10 @@ export default function ItineraryDisplay({ itinerary, onBack }: ItineraryDisplay
     for (const day of itinerary.days) {
       const activitiesWithImages = []
       for (const activity of day.activities) {
-        // More specific query with location details for better image variety
-        const { imageUrl, images } = await fetchImage(`${activity.title} ${activity.location} ${itinerary.destination} attraction`, 3)
-        const mapUrl = createGoogleMapsUrl(activity.location, itinerary.destination)
-        const searchUrl = createGoogleSearchUrl(`${activity.title} ${activity.location} ${itinerary.destination}`)
+        // Use only the specific location, not the full multi-city destination
+        const { imageUrl, images } = await fetchImage(`${activity.title} ${activity.location} attraction`, 3)
+        const mapUrl = createGoogleMapsUrl(activity.location)
+        const searchUrl = createGoogleSearchUrl(`${activity.title} ${activity.location}`)
         console.log(`Activity "${activity.title}" fetched ${images.length} images:`, images)
         activitiesWithImages.push({ ...activity, image: imageUrl, images, mapUrl, searchUrl })
         completedItems++
@@ -71,10 +71,10 @@ export default function ItineraryDisplay({ itinerary, onBack }: ItineraryDisplay
 
       const restaurantsWithImages = []
       for (const restaurant of day.restaurants) {
-        // More specific query for restaurants with location
-        const { imageUrl, images } = await fetchImage(`${restaurant.name} restaurant ${restaurant.location} ${itinerary.destination} ${restaurant.cuisine}`, 3)
-        const mapUrl = createGoogleMapsUrl(restaurant.location, itinerary.destination)
-        const searchUrl = createGoogleSearchUrl(`${restaurant.name} ${restaurant.location} ${itinerary.destination} restaurant`)
+        // Use only the specific location, not the full multi-city destination
+        const { imageUrl, images } = await fetchImage(`${restaurant.name} restaurant ${restaurant.location} ${restaurant.cuisine}`, 3)
+        const mapUrl = createGoogleMapsUrl(restaurant.location)
+        const searchUrl = createGoogleSearchUrl(`${restaurant.name} ${restaurant.location} restaurant`)
         restaurantsWithImages.push({ ...restaurant, image: imageUrl, images, mapUrl, searchUrl })
         completedItems++
         setImageProgress((completedItems / totalItems) * 100)
@@ -122,8 +122,8 @@ export default function ItineraryDisplay({ itinerary, onBack }: ItineraryDisplay
     }
   }
 
-  const createGoogleMapsUrl = (location: string, destination: string): string => {
-    const query = encodeURIComponent(`${location}, ${destination}`)
+  const createGoogleMapsUrl = (location: string): string => {
+    const query = encodeURIComponent(location)
     return `https://www.google.com/maps/search/?api=1&query=${query}`
   }
 
@@ -186,7 +186,7 @@ export default function ItineraryDisplay({ itinerary, onBack }: ItineraryDisplay
 
   // Show loading progress while fetching images
   if (loadingImages) {
-    return <LoadingProgress stage="loading-images" progress={imageProgress} />
+    return <LoadingProgress stage="loading-images" progress={imageProgress} destination={itinerary.destination} />
   }
 
   return (
