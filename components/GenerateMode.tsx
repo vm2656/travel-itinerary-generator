@@ -24,6 +24,8 @@ const INTERESTS = [
 ]
 
 export default function GenerateMode({ onBack }: GenerateModeProps) {
+  const today = new Date().toISOString().split('T')[0] // Get today's date in YYYY-MM-DD format
+
   const [formData, setFormData] = useState<GenerateFormData>({
     destination: '',
     startDate: '',
@@ -79,7 +81,7 @@ export default function GenerateMode({ onBack }: GenerateModeProps) {
   }
 
   if (loading) {
-    return <LoadingProgress stage="generating" />
+    return <LoadingProgress stage="generating" destination={formData.destination} />
   }
 
   if (itinerary) {
@@ -99,8 +101,8 @@ export default function GenerateMode({ onBack }: GenerateModeProps) {
 
         <div className="bg-white rounded-2xl shadow-xl p-8">
           <div className="flex items-center mb-8">
-            <div className="bg-purple-100 rounded-full p-3 mr-4">
-              <Sparkles className="w-8 h-8 text-purple-600" />
+            <div className="bg-gradient-to-br from-orange-100 to-orange-200 rounded-full p-3 mr-4">
+              <Sparkles className="w-8 h-8 text-orange-600" />
             </div>
             <div>
               <h1 className="text-3xl font-bold text-gray-900">Generate with AI</h1>
@@ -135,9 +137,10 @@ export default function GenerateMode({ onBack }: GenerateModeProps) {
                 <input
                   type="date"
                   required
+                  min={today}
                   value={formData.startDate}
                   onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                 />
               </div>
               <div>
@@ -148,9 +151,10 @@ export default function GenerateMode({ onBack }: GenerateModeProps) {
                 <input
                   type="date"
                   required
+                  min={formData.startDate || today}
                   value={formData.endDate}
                   onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                 />
               </div>
             </div>
@@ -166,7 +170,7 @@ export default function GenerateMode({ onBack }: GenerateModeProps) {
                     onClick={() => setFormData({ ...formData, pace })}
                     className={`py-3 px-4 rounded-lg font-semibold capitalize transition-colors ${
                       formData.pace === pace
-                        ? 'bg-purple-600 text-white'
+                        ? 'bg-gradient-to-r from-teal-500 to-teal-600 text-white'
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
                   >
@@ -190,7 +194,7 @@ export default function GenerateMode({ onBack }: GenerateModeProps) {
                     onClick={() => setFormData({ ...formData, budget })}
                     className={`py-3 px-4 rounded-lg font-semibold capitalize transition-colors ${
                       formData.budget === budget
-                        ? 'bg-purple-600 text-white'
+                        ? 'bg-gradient-to-r from-teal-500 to-teal-600 text-white'
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
                   >
@@ -214,7 +218,7 @@ export default function GenerateMode({ onBack }: GenerateModeProps) {
                     onClick={() => toggleInterest(interest)}
                     className={`py-2 px-3 rounded-lg text-sm font-medium transition-colors ${
                       formData.interests.includes(interest)
-                        ? 'bg-purple-600 text-white'
+                        ? 'bg-gradient-to-r from-teal-500 to-teal-600 text-white'
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
                   >
@@ -231,7 +235,7 @@ export default function GenerateMode({ onBack }: GenerateModeProps) {
                   type="checkbox"
                   checked={formData.vegetarianOnly}
                   onChange={(e) => setFormData({ ...formData, vegetarianOnly: e.target.checked })}
-                  className="w-5 h-5 text-purple-600 rounded focus:ring-purple-500"
+                  className="w-5 h-5 text-teal-600 rounded focus:ring-teal-500"
                 />
                 <span className="text-sm font-semibold text-gray-700">Show only vegetarian-friendly restaurants</span>
               </label>
@@ -262,7 +266,7 @@ export default function GenerateMode({ onBack }: GenerateModeProps) {
             <button
               type="submit"
               disabled={loading || formData.interests.length === 0}
-              className="w-full bg-purple-600 text-white py-4 rounded-xl font-semibold hover:bg-purple-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center"
+              className="w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white py-4 rounded-xl font-semibold hover:from-orange-600 hover:to-orange-700 transition-all shadow-lg hover:shadow-xl disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center"
             >
               {loading ? (
                 <>
