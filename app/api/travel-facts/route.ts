@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { GoogleGenerativeAI } from '@google/generative-ai'
 
+// In-memory cache for travel facts
+const factsCache = new Map<string, { facts: string[], timestamp: number }>()
+const CACHE_DURATION = 24 * 60 * 60 * 1000 // 24 hours
+
 // Retry helper for API calls
 async function retryWithBackoff<T>(
   fn: () => Promise<T>,
@@ -28,6 +32,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Destination is required' }, { status: 400 })
     }
 
+    // Check cache first
+    const cacheKey = destination.toLowerCase().trim()
+    const cached = factsCache.get(cacheKey)
+    if (cached && (Date.now() - cached.timestamp) < CACHE_DURATION) {
+      console.log(`✅ Using cached facts for ${destination}`)
+      return NextResponse.json({ facts: cached.facts })
+    }
+
     if (!process.env.GEMINI_API_KEY) {
       return NextResponse.json(
         { error: 'Gemini API key not configured' },
@@ -48,11 +60,14 @@ Make them engaging and informative. Include a mix of:
 - Historical facts or hidden gems
 - Local cuisine highlights or must-try experiences
 
-Format as a JSON array of strings. Each fact should be 1-2 sentences maximum.
-Return ONLY valid JSON array, no markdown, no code blocks.
+CRITICAL: Return ONLY a valid JSON array. Each fact should be 1-2 sentences maximum.
+- Use double quotes for strings
+- Escape any quotes within the text using backslash (\")
+- No markdown, no code blocks, no explanations
+- Start with [ and end with ]
 
 Example format:
-["Fact 1 here", "Fact 2 here", "Fact 3 here"]`
+["Fact 1 here", "Fact 2 with \\"quoted\\" text here", "Fact 3 here"]`
 
     // Retry with exponential backoff for 503 errors
     const result = await retryWithBackoff(
@@ -123,15 +138,15 @@ Example format:
       }
     }
 
-    // Strategy 3: Fallback to generic facts
+    // No fallback - return empty array if parsing fails
     if (!facts || facts.length === 0) {
-      console.warn('All parsing strategies failed, using fallback')
-      facts = [
-        `${destination} is a fascinating destination with unique attractions and experiences.`,
-        `Plan ahead and research local customs to make the most of your visit to ${destination}.`,
-        `The best time to visit ${destination} varies by season, so check weather conditions before your trip.`
-      ]
+      console.warn('All parsing strategies failed, returning empty array')
+      return NextResponse.json({ facts: [] })
     }
+
+    // Cache successful results
+    factsCache.set(cacheKey, { facts, timestamp: Date.now() })
+    console.log(`💾 Cached facts for ${destination}`)
 
     return NextResponse.json({ facts })
   } catch (error) {
